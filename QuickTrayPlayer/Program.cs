@@ -18,13 +18,12 @@ namespace QuickTrayPlayer
         {
             bool duplication = Settings.Default.Duplication;
             PipeClass pipeObj = new PipeClass("QuickTrayPlayer");
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Form1 form1 = new Form1();
+            form1.SetArgs(args);
             if (duplication || pipeObj.CreatedNew)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Form1 form1 = new Form1();
-                form1.args = args;
-                form1.Hide();
                 if (pipeObj.CreatedNew)
                 {
                     pipeObj.PipeHost(form1.OpenPlayInvoke);
@@ -33,7 +32,7 @@ namespace QuickTrayPlayer
             }
             else
             {
-                if (args.Length > 0) pipeObj.PipeSend(args[0]);
+                if (form1.Player.Source != null) pipeObj.PipeSend(form1.Player.Source.OriginalString);
             }
         }
     }

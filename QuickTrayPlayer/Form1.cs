@@ -22,7 +22,7 @@ namespace QuickTrayPlayer
         static private Assembly asm = Assembly.GetExecutingAssembly();
         private Icon playIcon = IconList.icon_QuickTrayPlayer;
         private Icon pauseIcon = IconList.icon_QuickTrayPlayer_pause;
-        private MinPlayer player = new MinPlayer();
+        public MinPlayer Player { get; private set; } = new MinPlayer();
         private readonly Dictionary<double, ToolStripMenuItem> volumes = new Dictionary<double, ToolStripMenuItem>();
         private readonly Dictionary<double, ToolStripMenuItem> speeds = new Dictionary<double, ToolStripMenuItem>();
         private readonly Dictionary<int, ToolStripMenuItem> loops = new Dictionary<int, ToolStripMenuItem>();
@@ -36,10 +36,10 @@ namespace QuickTrayPlayer
         {
             double volume = Settings.Default.Volume;
             Item_RadioCheck(volumes, volume, MenuVolume);
-            player.Volume = volume;
+            Player.Volume = volume;
             double speed = Settings.Default.Speed;
             Item_RadioCheck(speeds, speed, MenuSpeed);
-            player.SpeedRatio = speed;
+            Player.SpeedRatio = speed;
             LoopCount = 0;
             LoopMax = Settings.Default.Loop;
             Item_RadioCheck(loops, LoopMax, MenuLoop);
@@ -101,7 +101,7 @@ namespace QuickTrayPlayer
         }
         public void SetPlayer(string str)
         {
-            player.Open(str);
+            Player.Open(str);
             string text = Path.GetFileName(str);
             if (text.Length > 63) text = text.Substring(0, 63);
             notifyIcon1.Text = text;
@@ -116,18 +116,18 @@ namespace QuickTrayPlayer
         }
         void SyncIcon()
         {
-            if (player.NowPlay) { notifyIcon1.Icon = pauseIcon; }
+            if (Player.NowPlay) { notifyIcon1.Icon = pauseIcon; }
             else { notifyIcon1.Icon = playIcon; }
         }
         public void Play()
         {
-            player.Play();
+            Player.Play();
             SyncIcon();
         }
         public void Replay()
         {
             LoopCount = 0;
-            player.Position = TimeSpan.Zero;
+            Player.Position = TimeSpan.Zero;
             Play();
         }
         public void OpenPlayInvoke(string str)
@@ -142,23 +142,23 @@ namespace QuickTrayPlayer
         }
         public void Pause()
         {
-            player.Pause();
+            Player.Pause();
             SyncIcon();
         }
         public void Stop()
         {
             LoopCount = 0;
-            player.Stop();
+            Player.Stop();
             SyncIcon();
         }
         public void PlayPause()
         {
-            player.PlayPause();
+            Player.PlayPause();
             SyncIcon();
         }
         private void CloseEnd()
         {
-            player.Close();
+            Player.Close();
             Thread.Sleep(500);
             Close();
         }
@@ -179,7 +179,7 @@ namespace QuickTrayPlayer
             }
             if (looped)
             {
-                player.Position = TimeSpan.Zero;
+                Player.Position = TimeSpan.Zero;
             }
             else
             {
@@ -197,10 +197,8 @@ namespace QuickTrayPlayer
         {
             EndSwitch();
         }
-        public string[] args = null;
-        private void Form1_Load(object sender, EventArgs e)
+        public void SetArgs(string[] args)
         {
-            Hide();
             if (args != null && args.Length > 0)
             {
                 SetPlayer(args[0]);
@@ -209,14 +207,18 @@ namespace QuickTrayPlayer
             {
                 OpenFileDialog();
             }
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Hide();
             loaded = true;
-            if (player.Source == null)
+            if (Player.Source == null)
             {
                 EndSwitch();
             }
             else
             {
-                player.MediaEnded += new EventHandler(EventEnd);
+                Player.MediaEnded += new EventHandler(EventEnd);
                 Play();
             }
         }
@@ -248,7 +250,7 @@ namespace QuickTrayPlayer
             Item_RadioCheck(volumes, volume, MenuVolume);
             Settings.Default.Volume = volume;
             Settings.Default.Save();
-            player.Volume = volume;
+            Player.Volume = volume;
         }
         private void Volume_Click(object sender, EventArgs e)
         {
@@ -258,7 +260,7 @@ namespace QuickTrayPlayer
         {
             if (e.Button == MouseButtons.Right)
             {
-                Save_Volume(player.Volume != 0.5 ? 0.5 : 1);
+                Save_Volume(Player.Volume != 0.5 ? 0.5 : 1);
             }
         }
         private void Save_Speed(double speed)
@@ -266,7 +268,7 @@ namespace QuickTrayPlayer
             Item_RadioCheck(speeds, speed, MenuSpeed);
             Settings.Default.Speed = speed;
             Settings.Default.Save();
-            player.SpeedRatio = speed;
+            Player.SpeedRatio = speed;
         }
         private void Speed_Click(object sender, EventArgs e)
         {
@@ -276,12 +278,12 @@ namespace QuickTrayPlayer
         {
             if (e.Button == MouseButtons.Right)
             {
-                Save_Speed(player.SpeedRatio != 1 ? 1 : 2);
+                Save_Speed(Player.SpeedRatio != 1 ? 1 : 2);
             }
         }
         private void Set_Time(double per)
         {
-            player.SetPositionFromRadio(per);
+            Player.SetPositionFromRadio(per);
             Play();
         }
         private void Time_Click(object sender, EventArgs e)
