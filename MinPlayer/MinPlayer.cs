@@ -20,7 +20,7 @@ namespace MinPlayer
         public void Close() { NowPlay = false; player.Close(); }
         public void Play() { NowPlay = true; player.Play();}
         public void Pause() { NowPlay = false; player.Pause(); }
-        public void Stop() { NowPlay = true; player.Stop(); }
+        public void Stop() { NowPlay = false; player.Stop(); }
         public void PlayPause() { if (NowPlay) { Pause(); } else { Play(); } }
         public event EventHandler MediaEnded
         {

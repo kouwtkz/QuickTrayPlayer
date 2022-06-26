@@ -200,6 +200,7 @@ namespace QuickTrayPlayer
         public string[] args = null;
         private void Form1_Load(object sender, EventArgs e)
         {
+            Hide();
             if (args != null && args.Length > 0)
             {
                 SetPlayer(args[0]);
