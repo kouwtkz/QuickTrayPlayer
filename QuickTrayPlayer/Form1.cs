@@ -114,17 +114,6 @@ namespace QuickTrayPlayer
                 + "|All files|*.*";
             openFileDialog1.ShowDialog();
         }
-        public void SetArgs(string[] args)
-        {
-            if (args.Length > 0)
-            {
-                SetPlayer(args[0]);
-            }
-            else
-            {
-                OpenFileDialog();
-            }
-        }
         void SyncIcon()
         {
             if (player.NowPlay) { notifyIcon1.Icon = pauseIcon; }
@@ -208,13 +197,21 @@ namespace QuickTrayPlayer
         {
             EndSwitch();
         }
+        public string[] args = null;
         private void Form1_Load(object sender, EventArgs e)
         {
-            Hide();
+            if (args != null && args.Length > 0)
+            {
+                SetPlayer(args[0]);
+            }
+            else
+            {
+                OpenFileDialog();
+            }
             loaded = true;
             if (player.Source == null)
             {
-                Close();
+                EndSwitch();
             }
             else
             {

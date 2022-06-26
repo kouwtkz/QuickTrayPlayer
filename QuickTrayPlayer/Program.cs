@@ -23,7 +23,8 @@ namespace QuickTrayPlayer
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Form1 form1 = new Form1();
-                form1.SetArgs(args);
+                form1.args = args;
+                form1.Hide();
                 if (pipeObj.CreatedNew)
                 {
                     pipeObj.PipeHost(form1.OpenPlayInvoke);

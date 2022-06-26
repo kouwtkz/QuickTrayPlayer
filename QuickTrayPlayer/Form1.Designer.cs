@@ -421,6 +421,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "QuickTrayPlay";
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
