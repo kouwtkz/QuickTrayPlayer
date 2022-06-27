@@ -29,9 +29,7 @@ namespace QuickTrayPlayer
         public int LoopCount { get; private set; } = 0;
         public int LoopMax { get; private set; } = 0;
         private bool loaded = false;
-        private readonly HotKey playkey = new HotKey(MOD_KEY.NONE, Keys.MediaPlayPause);
-        private readonly HotKey prevkey = new HotKey(MOD_KEY.NONE, Keys.MediaPreviousTrack);
-        private readonly HotKey nextkey = new HotKey(MOD_KEY.NONE, Keys.MediaNextTrack);
+        private readonly Dictionary<string, HotKey> hotkeys = new Dictionary<string, HotKey>();
         public void ReadSetting()
         {
             double volume = Settings.Default.Volume;
@@ -47,37 +45,40 @@ namespace QuickTrayPlayer
             MenuAutoExit.Checked = Settings.Default.AutoExit;
             MenuDuplication.Checked = Settings.Default.Duplication;
             MenuHotKey.Checked = Settings.Default.HotKey;
+            if (MenuHotKey.Checked) { EnableHotKey(); } else { DisableHotkey(); }
+        }
+        public void EnableHotKey(string keyStr, MOD_KEY mod, Keys key, Action action)
+        {
+            if (!hotkeys.ContainsKey(keyStr))
+            {
+                HotKey hotKey = new HotKey(mod, key);
+                hotkeys.Add(keyStr, hotKey);
+                hotKey.HotKeyPush += new EventHandler(
+                    (object sender, EventArgs e) => { action(); }
+                );
+            }
+        }
+        public void EnableHotKey()
+        {
+            EnableHotKey("MediaPlayPause",
+                MOD_KEY.NONE, Keys.MediaPlayPause, () => { PlayPause(); }
+            );
+            EnableHotKey("MediaPreviousTrack",
+                MOD_KEY.NONE, Keys.MediaPlayPause, () => { Replay(); }
+            );
+            EnableHotKey("MediaNextTrack",
+                MOD_KEY.NONE, Keys.MediaNextTrack, () => { Stop(); EndSwitch(); }
+            );
+        }
+        public void DisableHotkey()
+        {
+            foreach (KeyValuePair<string, HotKey> hkp in hotkeys) {
+                hkp.Value.Dispose();
+            }
+            hotkeys.Clear();
         }
         public Form1()
         {
-            playkey.HotKeyPush += new EventHandler(
-                (object sender, EventArgs e) =>
-                {
-                    if (MenuHotKey.Checked)
-                    {
-                        PlayPause();
-                    }
-                }
-            );
-            prevkey.HotKeyPush += new EventHandler(
-                (object sender, EventArgs e) =>
-                {
-                    if (MenuHotKey.Checked)
-                    {
-                        Replay();
-                    }
-                }
-            );
-            nextkey.HotKeyPush += new EventHandler(
-                (object sender, EventArgs e) =>
-                {
-                    if (MenuHotKey.Checked)
-                    {
-                        Stop();
-                        EndSwitch();
-                    }
-                }
-            );
             InitializeComponent();
             foreach (ToolStripMenuItem _item in MenuVolume.DropDownItems)
             {
@@ -95,9 +96,7 @@ namespace QuickTrayPlayer
         }
         ~Form1()
         {
-            playkey.Dispose();
-            prevkey.Dispose();
-            nextkey.Dispose();
+            DisableHotkey();
         }
         public void SetPlayer(string str)
         {
@@ -332,6 +331,7 @@ namespace QuickTrayPlayer
             MenuHotKey.Checked = !MenuHotKey.Checked;
             Settings.Default.HotKey = MenuHotKey.Checked;
             Settings.Default.Save();
+            if (MenuHotKey.Checked) { EnableHotKey(); } else { DisableHotkey(); }
         }
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
