@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinPlayer", "MinPlayer\MinP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickTrayPlayer", "QuickTrayPlayer\QuickTrayPlayer.csproj", "{53775E1A-D00F-4949-8594-E05E64A2A0A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp1", "WindowsFormsApp1\WindowsFormsApp1.csproj", "{193AB81C-6AE1-482D-8D29-BC7959E72057}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{53775E1A-D00F-4949-8594-E05E64A2A0A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53775E1A-D00F-4949-8594-E05E64A2A0A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53775E1A-D00F-4949-8594-E05E64A2A0A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{193AB81C-6AE1-482D-8D29-BC7959E72057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{193AB81C-6AE1-482D-8D29-BC7959E72057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{193AB81C-6AE1-482D-8D29-BC7959E72057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{193AB81C-6AE1-482D-8D29-BC7959E72057}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

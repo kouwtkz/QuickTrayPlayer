@@ -16,14 +16,30 @@ namespace QuickTrayPlayer
         [STAThread]
         static void Main(string[] args)
         {
-            bool duplication = Settings.Default.Duplication;
-            PipeClass pipeObj = new PipeClass("QuickTrayPlayer");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form1 form1 = new Form1();
-            form1.SetArgs(args);
+            bool duplication = Settings.Default.Duplication;
+            PipeClass pipeObj = new PipeClass("QuickTrayPlayer");
+            string path = "";
+            if (args.Length > 0)
+            {
+                path = args[0];
+            } else
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    
+                    openFileDialog.Filter = Resources.FileExtsFilter;
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        path = openFileDialog.FileName;
+                    }
+                }
+            }
             if (duplication || pipeObj.CreatedNew)
             {
+                Form1 form1 = new Form1();
+                form1.SetPlayer(path);
                 if (pipeObj.CreatedNew)
                 {
                     pipeObj.PipeHost(form1.OpenPlayInvoke);
@@ -32,7 +48,7 @@ namespace QuickTrayPlayer
             }
             else
             {
-                if (form1.Player.Source != null) pipeObj.PipeSend(form1.Player.Source.OriginalString);
+                if (path != "") pipeObj.PipeSend(path);
             }
         }
     }

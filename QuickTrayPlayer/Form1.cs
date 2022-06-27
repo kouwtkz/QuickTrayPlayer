@@ -108,10 +108,7 @@ namespace QuickTrayPlayer
         }
         public void OpenFileDialog()
         {
-            openFileDialog1.Filter =
-                "audio files|*.wav;*.wma;*.mp3;*.mp4;*.m4a;*.aac;"
-                + "*.ogg;*.oga;*.flac;*.aif?;*.mid?"
-                + "|All files|*.*";
+            openFileDialog1.Filter = Resources.FileExtsFilter;
             openFileDialog1.ShowDialog();
         }
         void SyncIcon()
