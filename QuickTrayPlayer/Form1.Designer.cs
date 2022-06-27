@@ -77,7 +77,7 @@
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Text = "QuickTrayPlayer";
             this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TaskClick);
+            this.notifyIcon1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TaskMouseDown);
             // 
             // contextMenuStrip1
             // 

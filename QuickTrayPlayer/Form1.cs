@@ -219,7 +219,7 @@ namespace QuickTrayPlayer
                 Play();
             }
         }
-        private void TaskClick(object sender, MouseEventArgs e)
+        private void TaskMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
