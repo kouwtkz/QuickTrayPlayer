@@ -117,33 +117,33 @@
             this.TrayMenu.Name = "contextMenuStrip1";
             this.TrayMenu.ShowCheckMargin = true;
             this.TrayMenu.ShowImageMargin = false;
-            this.TrayMenu.Size = new System.Drawing.Size(156, 244);
+            this.TrayMenu.Size = new System.Drawing.Size(211, 272);
             // 
             // MenuOpen
             // 
             this.MenuOpen.Name = "MenuOpen";
-            this.MenuOpen.Size = new System.Drawing.Size(155, 24);
+            this.MenuOpen.Size = new System.Drawing.Size(210, 24);
             this.MenuOpen.Text = "Open";
             this.MenuOpen.Click += new System.EventHandler(this.Open_Click);
             // 
             // MenuHotKey
             // 
             this.MenuHotKey.Name = "MenuHotKey";
-            this.MenuHotKey.Size = new System.Drawing.Size(155, 24);
+            this.MenuHotKey.Size = new System.Drawing.Size(210, 24);
             this.MenuHotKey.Text = "HotKey";
             this.MenuHotKey.Click += new System.EventHandler(this.HotKey_Click);
             // 
             // MenuDuplication
             // 
             this.MenuDuplication.Name = "MenuDuplication";
-            this.MenuDuplication.Size = new System.Drawing.Size(155, 24);
+            this.MenuDuplication.Size = new System.Drawing.Size(210, 24);
             this.MenuDuplication.Text = "Duplication";
             this.MenuDuplication.Click += new System.EventHandler(this.Duplication_Click);
             // 
             // MenuAutoExit
             // 
             this.MenuAutoExit.Name = "MenuAutoExit";
-            this.MenuAutoExit.Size = new System.Drawing.Size(155, 24);
+            this.MenuAutoExit.Size = new System.Drawing.Size(210, 24);
             this.MenuAutoExit.Text = "AutoExit";
             this.MenuAutoExit.Click += new System.EventHandler(this.AutoExit_Click);
             // 
@@ -151,7 +151,7 @@
             // 
             this.MenuSpeed.DropDown = this.MenuList_Speed;
             this.MenuSpeed.Name = "MenuSpeed";
-            this.MenuSpeed.Size = new System.Drawing.Size(155, 24);
+            this.MenuSpeed.Size = new System.Drawing.Size(210, 24);
             this.MenuSpeed.Text = "Speed";
             this.MenuSpeed.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Speed_Parent_Click);
             // 
@@ -177,6 +177,7 @@
             this.MenuList_SpeedText.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.MenuList_SpeedText.Name = "MenuList_SpeedText";
             this.MenuList_SpeedText.Size = new System.Drawing.Size(50, 27);
+            this.MenuList_SpeedText.ToolTipText = "0.05~256";
             this.MenuList_SpeedText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuList_SpeedText_KeyDown);
             this.MenuList_SpeedText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterNumber_KeyPress);
             this.MenuList_SpeedText.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MenuList_SpeedText_KeyUp);
@@ -185,7 +186,7 @@
             // toolStripMenuItem49
             // 
             this.toolStripMenuItem49.Name = "toolStripMenuItem49";
-            this.toolStripMenuItem49.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem49.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem49.Tag = "0.5";
             this.toolStripMenuItem49.Text = "0.5";
             this.toolStripMenuItem49.Click += new System.EventHandler(this.Speed_Click);
@@ -193,7 +194,7 @@
             // toolStripMenuItem50
             // 
             this.toolStripMenuItem50.Name = "toolStripMenuItem50";
-            this.toolStripMenuItem50.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem50.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem50.Tag = "0.75";
             this.toolStripMenuItem50.Text = "0.75";
             this.toolStripMenuItem50.Click += new System.EventHandler(this.Speed_Click);
@@ -201,7 +202,7 @@
             // toolStripMenuItem51
             // 
             this.toolStripMenuItem51.Name = "toolStripMenuItem51";
-            this.toolStripMenuItem51.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem51.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem51.Tag = "1";
             this.toolStripMenuItem51.Text = "1";
             this.toolStripMenuItem51.Click += new System.EventHandler(this.Speed_Click);
@@ -209,7 +210,7 @@
             // toolStripMenuItem52
             // 
             this.toolStripMenuItem52.Name = "toolStripMenuItem52";
-            this.toolStripMenuItem52.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem52.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem52.Tag = "1.25";
             this.toolStripMenuItem52.Text = "1.25";
             this.toolStripMenuItem52.Click += new System.EventHandler(this.Speed_Click);
@@ -217,7 +218,7 @@
             // toolStripMenuItem53
             // 
             this.toolStripMenuItem53.Name = "toolStripMenuItem53";
-            this.toolStripMenuItem53.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem53.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem53.Tag = "1.5";
             this.toolStripMenuItem53.Text = "1.5";
             this.toolStripMenuItem53.Click += new System.EventHandler(this.Speed_Click);
@@ -225,7 +226,7 @@
             // toolStripMenuItem54
             // 
             this.toolStripMenuItem54.Name = "toolStripMenuItem54";
-            this.toolStripMenuItem54.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem54.Size = new System.Drawing.Size(110, 24);
             this.toolStripMenuItem54.Tag = "2";
             this.toolStripMenuItem54.Text = "2";
             this.toolStripMenuItem54.Click += new System.EventHandler(this.Speed_Click);
@@ -234,7 +235,7 @@
             // 
             this.MenuPanPot.DropDown = this.MenuList_PanPot;
             this.MenuPanPot.Name = "MenuPanPot";
-            this.MenuPanPot.Size = new System.Drawing.Size(155, 24);
+            this.MenuPanPot.Size = new System.Drawing.Size(210, 24);
             this.MenuPanPot.Tag = "1";
             this.MenuPanPot.Text = "PanPot";
             this.MenuPanPot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PanPot_Parent_Click);
@@ -260,6 +261,7 @@
             this.MenuList_PanPotText.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.MenuList_PanPotText.Name = "MenuList_PanPotText";
             this.MenuList_PanPotText.Size = new System.Drawing.Size(50, 27);
+            this.MenuList_PanPotText.ToolTipText = "-100~100";
             this.MenuList_PanPotText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuList_PanPotText_KeyDown);
             this.MenuList_PanPotText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterNumber_KeyPress);
             this.MenuList_PanPotText.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MenuList_PanPotText_KeyUp);
@@ -268,7 +270,7 @@
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(129, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(210, 24);
             this.toolStripMenuItem2.Tag = "-1";
             this.toolStripMenuItem2.Text = "-100 (L)";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.PanPot_Click);
@@ -276,7 +278,7 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(129, 24);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(210, 24);
             this.toolStripMenuItem3.Tag = "-0.5";
             this.toolStripMenuItem3.Text = "-50 (L)";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.PanPot_Click);
@@ -284,7 +286,7 @@
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(129, 24);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(210, 24);
             this.toolStripMenuItem4.Tag = "0";
             this.toolStripMenuItem4.Text = "0";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.PanPot_Click);
@@ -292,14 +294,14 @@
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(129, 24);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(210, 24);
             this.toolStripMenuItem6.Tag = "0.5";
             this.toolStripMenuItem6.Text = "50 (R)";
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(129, 24);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(210, 24);
             this.toolStripMenuItem5.Tag = "1";
             this.toolStripMenuItem5.Text = "100 (R)";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.PanPot_Click);
@@ -308,7 +310,7 @@
             // 
             this.MenuVolume.DropDown = this.MenuList_Volume;
             this.MenuVolume.Name = "MenuVolume";
-            this.MenuVolume.Size = new System.Drawing.Size(155, 24);
+            this.MenuVolume.Size = new System.Drawing.Size(210, 24);
             this.MenuVolume.Text = "Volume";
             this.MenuVolume.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Volume_Parent_Click);
             // 
@@ -339,6 +341,7 @@
             this.MenuList_VolumeText.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.MenuList_VolumeText.Name = "MenuList_VolumeText";
             this.MenuList_VolumeText.Size = new System.Drawing.Size(50, 27);
+            this.MenuList_VolumeText.ToolTipText = "0~100";
             this.MenuList_VolumeText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuList_VolumeText_KeyDown);
             this.MenuList_VolumeText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterNumber_KeyPress);
             this.MenuList_VolumeText.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MenuList_VolumeText_KeyUp);
@@ -436,7 +439,7 @@
             // 
             this.MenuLoop.DropDown = this.MenuList_Loop;
             this.MenuLoop.Name = "MenuLoop";
-            this.MenuLoop.Size = new System.Drawing.Size(155, 24);
+            this.MenuLoop.Size = new System.Drawing.Size(210, 24);
             this.MenuLoop.Text = "Loop";
             this.MenuLoop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Loop_Parent_Click);
             // 
@@ -452,9 +455,10 @@
             this.toolStripMenuItem36,
             this.toolStripMenuItem37});
             this.MenuList_Loop.Name = "MenuList_Speed";
+            this.MenuList_Loop.OwnerItem = this.MenuLoop;
             this.MenuList_Loop.ShowCheckMargin = true;
             this.MenuList_Loop.ShowImageMargin = false;
-            this.MenuList_Loop.Size = new System.Drawing.Size(113, 177);
+            this.MenuList_Loop.Size = new System.Drawing.Size(211, 205);
             // 
             // MenuList_LoopText
             // 
@@ -462,6 +466,7 @@
             this.MenuList_LoopText.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.MenuList_LoopText.Name = "MenuList_LoopText";
             this.MenuList_LoopText.Size = new System.Drawing.Size(50, 27);
+            this.MenuList_LoopText.ToolTipText = "-1~999";
             this.MenuList_LoopText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuList_LoopText_KeyDown);
             this.MenuList_LoopText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FilterNumber_KeyPress);
             this.MenuList_LoopText.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MenuList_LoopText_KeyUp);
@@ -519,7 +524,7 @@
             // 
             this.MenuTime.DropDown = this.MenuList_Jump;
             this.MenuTime.Name = "MenuTime";
-            this.MenuTime.Size = new System.Drawing.Size(155, 24);
+            this.MenuTime.Size = new System.Drawing.Size(210, 24);
             this.MenuTime.Text = "Jump";
             this.MenuTime.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MenuTime_MouseDown);
             // 
@@ -533,10 +538,9 @@
             this.toolStripMenuItem30,
             this.toolStripMenuItem31});
             this.MenuList_Jump.Name = "MenuList_Time";
-            this.MenuList_Jump.OwnerItem = this.MenuTime;
             this.MenuList_Jump.ShowCheckMargin = true;
             this.MenuList_Jump.ShowImageMargin = false;
-            this.MenuList_Jump.Size = new System.Drawing.Size(211, 157);
+            this.MenuList_Jump.Size = new System.Drawing.Size(111, 129);
             // 
             // MenuList_TimeText
             // 
@@ -586,7 +590,7 @@
             // MenuExit
             // 
             this.MenuExit.Name = "MenuExit";
-            this.MenuExit.Size = new System.Drawing.Size(155, 24);
+            this.MenuExit.Size = new System.Drawing.Size(210, 24);
             this.MenuExit.Text = "Exit";
             this.MenuExit.Click += new System.EventHandler(this.Exit_Click);
             // 
@@ -598,7 +602,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 505);
+            this.ClientSize = new System.Drawing.Size(556, 320);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

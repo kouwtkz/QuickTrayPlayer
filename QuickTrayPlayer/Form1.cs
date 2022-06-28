@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace QuickTrayPlayer
 {
@@ -609,17 +610,23 @@ namespace QuickTrayPlayer
         private void FilterNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             byte chr = (byte)e.KeyChar;
-            if (chr == 8 || (chr >= 45 && chr <= 46) || (chr >= 48 && chr <= 57))
+            Debug.WriteLine(chr);
+            switch (chr)
             {
-                ((ToolStripTextBox)sender).BackColor = Color.Honeydew;
-            } else if (chr == 13)
-            {
-                ((ToolStripTextBox)sender).BackColor = Color.White;
-                e.Handled = true;
-            }
-            else
-            {
-                e.Handled = true;
+                case 1:
+                    break;
+                case 13:
+                    ((ToolStripTextBox)sender).BackColor = Color.White;
+                    e.Handled = true;
+                    break;
+                case 8: case 25: case 26: case 45: case 46:
+                case 48: case 49: case 50: case 51: case 52:
+                case 53: case 54: case 55: case 56: case 57:
+                    ((ToolStripTextBox)sender).BackColor = Color.Honeydew;
+                    break;
+                default:
+                    e.Handled = true;
+                    break;
             }
         }
 
@@ -644,7 +651,7 @@ namespace QuickTrayPlayer
         private void MenuList_LoopText_TextChanged(object sender, EventArgs e)
         {
             var _MenuText = (ToolStripTextBox)sender;
-            RangeLimit(_MenuText, -1, 100);
+            RangeLimit(_MenuText, -1, 999);
         }
 
         private void MenuList_TimeText_TextChanged(object sender, EventArgs e)

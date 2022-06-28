@@ -50,8 +50,11 @@ namespace MinPlayer
         public int NaturalVideoWidth { get { return player.NaturalVideoWidth; } }
         public void SetPositionFromRadio(double radio)
         {
-            double time = player.NaturalDuration.TimeSpan.TotalMilliseconds * radio;
-            player.Position = TimeSpan.FromMilliseconds(time);
+            if (player.Source != null)
+            {
+                double time = player.NaturalDuration.TimeSpan.TotalMilliseconds * radio;
+                player.Position = TimeSpan.FromMilliseconds(time);
+            }
         }
 
     }
