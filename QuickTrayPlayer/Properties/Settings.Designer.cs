@@ -94,5 +94,17 @@ namespace QuickTrayPlayer.Properties {
                 this["Volume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double PanPot {
+            get {
+                return ((double)(this["PanPot"]));
+            }
+            set {
+                this["PanPot"] = value;
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace QuickTrayPlayer
         public MinPlayer Player { get; private set; } = new MinPlayer();
         private readonly Dictionary<double, ToolStripMenuItem> volumes = new Dictionary<double, ToolStripMenuItem>();
         private readonly Dictionary<double, ToolStripMenuItem> speeds = new Dictionary<double, ToolStripMenuItem>();
+        private readonly Dictionary<double, ToolStripMenuItem> panpots = new Dictionary<double, ToolStripMenuItem>();
         private readonly Dictionary<int, ToolStripMenuItem> loops = new Dictionary<int, ToolStripMenuItem>();
         public int LoopCount { get; private set; } = 0;
         public int LoopMax { get; private set; } = 0;
@@ -35,13 +36,20 @@ namespace QuickTrayPlayer
             double volume = Settings.Default.Volume;
             Item_RadioCheck(volumes, volume, MenuVolume);
             Player.Volume = volume;
+            MenuList_VolumeText.Text = (volume * 100).ToString();
             double speed = Settings.Default.Speed;
             Item_RadioCheck(speeds, speed, MenuSpeed);
             Player.SpeedRatio = speed;
+            MenuList_SpeedText.Text = speed.ToString();
+            double panpot = Settings.Default.PanPot;
+            Item_RadioCheck(panpots, panpot, MenuPanPot);
+            Player.Balance = panpot;
+            MenuList_PanPotText.Text = (panpot * 100).ToString();
             LoopCount = 0;
             LoopMax = Settings.Default.Loop;
             Item_RadioCheck(loops, LoopMax, MenuLoop);
             MenuLoop.Checked = LoopMax != 0;
+            MenuList_LoopText.Text = LoopMax.ToString();
             MenuAutoExit.Checked = Settings.Default.AutoExit;
             MenuDuplication.Checked = Settings.Default.Duplication;
             MenuHotKey.Checked = Settings.Default.HotKey;
@@ -72,26 +80,43 @@ namespace QuickTrayPlayer
         }
         public void DisableHotkey()
         {
-            foreach (KeyValuePair<string, HotKey> hkp in hotkeys) {
+            foreach (KeyValuePair<string, HotKey> hkp in hotkeys)
+            {
                 hkp.Value.Dispose();
             }
             hotkeys.Clear();
         }
+        static public void FilterToolStripItem(ToolStripItemCollection items, Action<ToolStripMenuItem> action)
+        {
+            foreach (object _item in items)
+            {
+                if (_item.GetType().Name == "ToolStripMenuItem")
+                {
+                    var _item_tsmi = (ToolStripMenuItem)_item;
+                    action(_item_tsmi);
+                }
+            }
+
+        }
         public Form1()
         {
             InitializeComponent();
-            foreach (ToolStripMenuItem _item in MenuVolume.DropDownItems)
+            FilterToolStripItem(MenuVolume.DropDownItems, (_item) =>
             {
                 volumes.Add(Convert.ToDouble(_item.Tag), _item);
-            }
-            foreach (ToolStripMenuItem _item in MenuSpeed.DropDownItems)
+            });
+            FilterToolStripItem(MenuSpeed.DropDownItems, (_item) =>
             {
                 speeds.Add(Convert.ToDouble(_item.Tag), _item);
-            }
-            foreach (ToolStripMenuItem _item in MenuLoop.DropDownItems)
+            });
+            FilterToolStripItem(MenuLoop.DropDownItems, (_item) =>
             {
                 loops.Add(Convert.ToInt32(_item.Tag), _item);
-            }
+            });
+            FilterToolStripItem(MenuPanPot.DropDownItems, (_item) =>
+            {
+                panpots.Add(Convert.ToDouble(_item.Tag), _item);
+            });
             ReadSetting();
         }
         ~Form1()
@@ -231,10 +256,10 @@ namespace QuickTrayPlayer
         }
         private void Item_RadioCheck(ToolStripMenuItem item, ToolStripMenuItem parentItem)
         {
-            foreach (ToolStripMenuItem _item in parentItem.DropDownItems)
+            FilterToolStripItem(parentItem.DropDownItems, (_item) =>
             {
                 _item.Checked = false;
-            }
+            });
             if (item != null) item.Checked = true;
         }
         private void Item_RadioCheck<T>(Dictionary<T, ToolStripMenuItem> dic, T key, ToolStripMenuItem parentItem)
@@ -247,6 +272,7 @@ namespace QuickTrayPlayer
             Settings.Default.Volume = volume;
             Settings.Default.Save();
             Player.Volume = volume;
+            MenuList_VolumeText.Text = (volume * 100).ToString();
         }
         private void Volume_Click(object sender, EventArgs e)
         {
@@ -265,6 +291,7 @@ namespace QuickTrayPlayer
             Settings.Default.Speed = speed;
             Settings.Default.Save();
             Player.SpeedRatio = speed;
+            MenuList_SpeedText.Text = speed.ToString();
         }
         private void Speed_Click(object sender, EventArgs e)
         {
@@ -286,13 +313,35 @@ namespace QuickTrayPlayer
         {
             Set_Time(Convert.ToDouble(((ToolStripMenuItem)sender).Tag));
         }
-        private void Time_Parent_Click(object sender, MouseEventArgs e)
+        private void MenuTime_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
                 Set_Time(0);
             }
         }
+
+        private void Save_PanPot(double panpot)
+        {
+            Item_RadioCheck(panpots, panpot, MenuPanPot);
+            Settings.Default.PanPot = panpot;
+            Settings.Default.Save();
+            Player.Balance = panpot;
+            MenuList_PanPotText.Text = (panpot * 100).ToString();
+        }
+        private void PanPot_Click(object sender, EventArgs e)
+        {
+            Save_PanPot(Convert.ToDouble(((ToolStripMenuItem)sender).Tag));
+        }
+        private void PanPot_Parent_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Save_PanPot(Player.Balance == 0 ? -1 : 
+                    (Player.Balance == -1 ? 1 : 0));
+            }
+        }
+
         private void Save_Loop()
         {
             Item_RadioCheck(loops, LoopMax, MenuLoop);
@@ -300,18 +349,22 @@ namespace QuickTrayPlayer
             Settings.Default.Loop = LoopMax;
             Settings.Default.Save();
             MenuLoop.Checked = LoopMax != 0;
+            MenuList_LoopText.Text = LoopMax.ToString();
+        }
+        private void Save_Loop(int value)
+        {
+            LoopMax = value;
+            Save_Loop();
         }
         private void Loop_Click(object sender, EventArgs e)
         {
-            LoopMax = Convert.ToInt32(((ToolStripMenuItem)sender).Tag);
-            Save_Loop();
+            Save_Loop(Convert.ToInt32(((ToolStripMenuItem)sender).Tag));
         }
         private void Loop_Parent_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                LoopMax = LoopMax == 0 ? -1 : 0;
-                Save_Loop();
+                Save_Loop(LoopMax == 0 ? -1 : 0);
             }
         }
         private void AutoExit_Click(object sender, EventArgs e)
@@ -344,6 +397,201 @@ namespace QuickTrayPlayer
         private void Open_Click(object sender, EventArgs e)
         {
             OpenFileDialog();
+        }
+
+        private bool RangeLimit(ToolStripTextBox item, int min, int max)
+        {
+            if (Int32.TryParse(item.Text, out int v))
+            {
+                int vc = v;
+                if (v > max) { vc = max; }
+                else if (v < min) { vc = min; item.Text = min.ToString(); }
+                if (v != vc) item.Text = vc.ToString();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool RangeLimit(ToolStripTextBox item, double min, double max)
+        {
+            if (Double.TryParse(item.Text, out double v))
+            {
+                double vc = v;
+                if (v > max) { vc = max; }
+                else if (v < min) { vc = min; item.Text = min.ToString(); }
+                if (v != vc) item.Text = vc.ToString();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void MenuListTextInc(ToolStripTextBox item, double step = 1)
+        {
+            Double.TryParse(item.Text, out double v);
+            item.Text = (v + step).ToString();
+        }
+
+        private void MenuText_KeyDown(ToolStripTextBox menutext, Keys key, double inc)
+        {
+            switch (key)
+            {
+                case Keys.Up:
+                    MenuListTextInc(menutext, inc);
+                    break;
+                case Keys.Down:
+                    MenuListTextInc(menutext, -inc);
+                    break;
+            }
+        }
+        private void MenuList_SpeedText_KeyDown(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            MenuText_KeyDown(_MenuText, e.KeyData, 0.05);
+            RangeLimit(_MenuText, (double)0, 32);
+        }
+
+        private void MenuList_SpeedText_KeyUp(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            if (Double.TryParse(_MenuText.Text, out double v))
+            {
+                Save_Speed(v / 100);
+            }
+        }
+
+        private void MenuList_PanPotText_KeyDown(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            MenuText_KeyDown(_MenuText, e.KeyData, 1);
+            RangeLimit(_MenuText, (double)-100, 100);
+            if (Double.TryParse(_MenuText.Text, out double v))
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                    case Keys.Down:
+                        Player.Balance = v / 100;
+                        break;
+                    case Keys.Enter:
+                        Save_PanPot(v / 100);
+                        break;
+                }
+            }
+        }
+
+        private void MenuList_PanPotText_KeyUp(object sender, KeyEventArgs e)
+        {
+            var tstb = (ToolStripTextBox)sender;
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                    if (Double.TryParse(tstb.Text, out double v))
+                    {
+                        Save_PanPot(v / 100);
+                    }
+                    break;
+            }
+        }
+
+        private void MenuList_VolumeText_KeyDown(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            MenuText_KeyDown(_MenuText, e.KeyData, 1);
+            RangeLimit(_MenuText, (double)0, 100);
+            if (Double.TryParse(_MenuText.Text, out double v))
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                    case Keys.Down:
+                        Player.Volume = v / 100;
+                        break;
+                    case Keys.Enter:
+                        Save_Volume(v / 100);
+                        break;
+                }
+            }
+        }
+
+        private void MenuList_VolumeText_KeyUp(object sender, KeyEventArgs e)
+        {
+            var tstb = (ToolStripTextBox)sender;
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                    if (Double.TryParse(tstb.Text, out double v))
+                    {
+                        Save_Volume(v / 100);
+                    }
+                    break;
+            }
+        }
+
+        private void MenuList_LoopText_KeyDown(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            MenuText_KeyDown(_MenuText, e.KeyData, 1);
+            RangeLimit(_MenuText, -1, 100);
+            if (Int32.TryParse(_MenuText.Text, out int v))
+            {
+                if (e.KeyCode == Keys.Enter) Save_Loop(v);
+            }
+        }
+
+        private void MenuList_LoopText_KeyUp(object sender, KeyEventArgs e)
+        {
+            var tstb = (ToolStripTextBox)sender;
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                    if (Int32.TryParse(tstb.Text, out int v)) Save_Loop(v);
+                    break;
+            }
+        }
+
+        private void MenuList_TimeText_KeyDown(object sender, KeyEventArgs e)
+        {
+            var _MenuText = (ToolStripTextBox)sender;
+            MenuText_KeyDown(_MenuText, e.KeyData, 1);
+            RangeLimit(_MenuText, 0, 100);
+            if (e.KeyData == Keys.Enter)
+            {
+                if (Double.TryParse(_MenuText.Text, out double v))
+                {
+                    Set_Time(v / 100);
+                }
+            }
+        }
+
+        private void MenuList_TimeText_KeyUp(object sender, KeyEventArgs e)
+        {
+            var tstb = (ToolStripTextBox)sender;
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                    if (Double.TryParse(tstb.Text, out double v))
+                    {
+                        Set_Time(v / 100);
+                    }
+                    break;
+            }
+        }
+        private void FilterNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            byte chr = (byte)e.KeyChar;
+            if (!(chr == 8 || (chr >= 45 && chr <= 46) || (chr >= 48 && chr <= 57)))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
