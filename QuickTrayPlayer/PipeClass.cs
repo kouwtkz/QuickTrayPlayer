@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PipeObject
 {
@@ -70,19 +71,23 @@ namespace PipeObject
                 }
             });
         }
-        public bool PipeSend(string message)
+        public bool PipeSend(string message, int timeOut = 3000)
         {
             NamedPipeClientStream pipeClient = null;
             bool ret = false;
             try
             {
                 pipeClient = new NamedPipeClientStream(".", PipeName, PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
-                pipeClient.Connect();
+                pipeClient.Connect(timeOut);
                 var ss = new StreamString(pipeClient);
                 ss.WriteString(message);
                 var read = ss.ReadString();
                 Console.WriteLine("Server Response = " + read);
                 ret = true;
+            }
+            catch (TimeoutException toex)
+            {
+                ErrorMessage(toex.Message);
             }
             catch (OverflowException ofex)
             {
@@ -98,6 +103,20 @@ namespace PipeObject
                 pipeClient?.Close();
             }
             return ret;
+        }
+        static private void ErrorMessage(string message)
+        {
+            using (var f = new Form())
+            {
+                f.Opacity = 0;
+                f.ControlBox = false;
+                f.StartPosition = FormStartPosition.CenterScreen;
+                f.Show();
+                f.TopMost = true;
+                MessageBox.Show(f, message, "error caption",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                f.Dispose();
+            }
         }
     }
     public class StreamString
