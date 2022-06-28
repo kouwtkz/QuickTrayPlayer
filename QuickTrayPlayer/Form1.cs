@@ -37,19 +37,23 @@ namespace QuickTrayPlayer
             Item_RadioCheck(volumes, volume, MenuVolume);
             Player.Volume = volume;
             MenuList_VolumeText.Text = (volume * 100).ToString();
+            MenuList_VolumeText.BackColor = Color.White;
             double speed = Settings.Default.Speed;
             Item_RadioCheck(speeds, speed, MenuSpeed);
             Player.SpeedRatio = speed;
             MenuList_SpeedText.Text = speed.ToString();
+            MenuList_SpeedText.BackColor = Color.White;
             double panpot = Settings.Default.PanPot;
             Item_RadioCheck(panpots, panpot, MenuPanPot);
             Player.Balance = panpot;
             MenuList_PanPotText.Text = (panpot * 100).ToString();
+            MenuList_PanPotText.BackColor = Color.White;
             LoopCount = 0;
             LoopMax = Settings.Default.Loop;
             Item_RadioCheck(loops, LoopMax, MenuLoop);
             MenuLoop.Checked = LoopMax != 0;
             MenuList_LoopText.Text = LoopMax.ToString();
+            MenuList_LoopText.BackColor = Color.White;
             MenuAutoExit.Checked = Settings.Default.AutoExit;
             MenuDuplication.Checked = Settings.Default.Duplication;
             MenuHotKey.Checked = Settings.Default.HotKey;
@@ -235,6 +239,7 @@ namespace QuickTrayPlayer
             loaded = true;
             if (Player.Source == null)
             {
+                if (!MenuAutoExit.Checked) SyncIcon();
                 EndSwitch();
             }
             else
@@ -273,6 +278,7 @@ namespace QuickTrayPlayer
             Settings.Default.Save();
             Player.Volume = volume;
             MenuList_VolumeText.Text = (volume * 100).ToString();
+            MenuList_VolumeText.BackColor = Color.White;
         }
         private void Volume_Click(object sender, EventArgs e)
         {
@@ -292,6 +298,7 @@ namespace QuickTrayPlayer
             Settings.Default.Save();
             Player.SpeedRatio = speed;
             MenuList_SpeedText.Text = speed.ToString();
+            MenuList_SpeedText.BackColor = Color.White;
         }
         private void Speed_Click(object sender, EventArgs e)
         {
@@ -328,6 +335,7 @@ namespace QuickTrayPlayer
             Settings.Default.Save();
             Player.Balance = panpot;
             MenuList_PanPotText.Text = (panpot * 100).ToString();
+            MenuList_PanPotText.BackColor = Color.White;
         }
         private void PanPot_Click(object sender, EventArgs e)
         {
@@ -350,6 +358,7 @@ namespace QuickTrayPlayer
             Settings.Default.Save();
             MenuLoop.Checked = LoopMax != 0;
             MenuList_LoopText.Text = LoopMax.ToString();
+            MenuList_LoopText.BackColor = Color.White;
         }
         private void Save_Loop(int value)
         {
@@ -436,15 +445,17 @@ namespace QuickTrayPlayer
             item.Text = (v + step).ToString();
         }
 
-        private void MenuText_KeyDown(ToolStripTextBox menutext, Keys key, double inc)
+        private void MenuText_KeyDown(ToolStripTextBox _MenuText, Keys key, double inc)
         {
             switch (key)
             {
                 case Keys.Up:
-                    MenuListTextInc(menutext, inc);
+                    MenuListTextInc(_MenuText, inc);
+                    _MenuText.BackColor = Color.White;
                     break;
                 case Keys.Down:
-                    MenuListTextInc(menutext, -inc);
+                    MenuListTextInc(_MenuText, -inc);
+                    _MenuText.BackColor = Color.White;
                     break;
             }
         }
@@ -452,14 +463,24 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 0.05);
+            if (Double.TryParse(_MenuText.Text, out double v))
+            {
+                if (e.KeyCode == Keys.Enter) Save_Speed(v);
+            }
         }
 
         private void MenuList_SpeedText_KeyUp(object sender, KeyEventArgs e)
         {
             var _MenuText = (ToolStripTextBox)sender;
-            if (Double.TryParse(_MenuText.Text, out double v))
+            switch (e.KeyCode)
             {
-                Save_Speed(v);
+                case Keys.Up:
+                case Keys.Down:
+                    if (Double.TryParse(_MenuText.Text, out double v))
+                    {
+                        Save_Speed(v);
+                    }
+                    break;
             }
         }
 
@@ -484,14 +505,15 @@ namespace QuickTrayPlayer
 
         private void MenuList_PanPotText_KeyUp(object sender, KeyEventArgs e)
         {
-            var tstb = (ToolStripTextBox)sender;
+            var _MenuText = (ToolStripTextBox)sender;
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
-                    if (Double.TryParse(tstb.Text, out double v))
+                    if (Double.TryParse(_MenuText.Text, out double v))
                     {
                         Save_PanPot(v / 100);
+                        _MenuText.BackColor = Color.White;
                     }
                     break;
             }
@@ -518,12 +540,12 @@ namespace QuickTrayPlayer
 
         private void MenuList_VolumeText_KeyUp(object sender, KeyEventArgs e)
         {
-            var tstb = (ToolStripTextBox)sender;
+            var _MenuText = (ToolStripTextBox)sender;
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
-                    if (Double.TryParse(tstb.Text, out double v))
+                    if (Double.TryParse(_MenuText.Text, out double v))
                     {
                         Save_Volume(v / 100);
                     }
@@ -543,12 +565,15 @@ namespace QuickTrayPlayer
 
         private void MenuList_LoopText_KeyUp(object sender, KeyEventArgs e)
         {
-            var tstb = (ToolStripTextBox)sender;
+            var _MenuText = (ToolStripTextBox)sender;
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
-                    if (Int32.TryParse(tstb.Text, out int v)) Save_Loop(v);
+                    if (Int32.TryParse(_MenuText.Text, out int v))
+                    {
+                        Save_Loop(v);
+                    }
                     break;
             }
         }
@@ -568,14 +593,15 @@ namespace QuickTrayPlayer
 
         private void MenuList_TimeText_KeyUp(object sender, KeyEventArgs e)
         {
-            var tstb = (ToolStripTextBox)sender;
+            var _MenuText = (ToolStripTextBox)sender;
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
-                    if (Double.TryParse(tstb.Text, out double v))
+                    if (Double.TryParse(_MenuText.Text, out double v))
                     {
                         Set_Time(v / 100);
+                        _MenuText.BackColor = Color.White;
                     }
                     break;
             }
@@ -583,7 +609,15 @@ namespace QuickTrayPlayer
         private void FilterNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             byte chr = (byte)e.KeyChar;
-            if (!(chr == 8 || (chr >= 45 && chr <= 46) || (chr >= 48 && chr <= 57)))
+            if (chr == 8 || (chr >= 45 && chr <= 46) || (chr >= 48 && chr <= 57))
+            {
+                ((ToolStripTextBox)sender).BackColor = Color.Honeydew;
+            } else if (chr == 13)
+            {
+                ((ToolStripTextBox)sender).BackColor = Color.White;
+                e.Handled = true;
+            }
+            else
             {
                 e.Handled = true;
             }
@@ -591,27 +625,32 @@ namespace QuickTrayPlayer
 
         private void MenuList_SpeedText_TextChanged(object sender, EventArgs e)
         {
-            RangeLimit((ToolStripTextBox)sender, 0.05, 256);
+            var _MenuText = (ToolStripTextBox)sender;
+            RangeLimit(_MenuText, 0.05, 256);
         }
 
         private void MenuList_PanPotText_TextChanged(object sender, EventArgs e)
         {
-            RangeLimit((ToolStripTextBox)sender, (double)-100, 100);
+            var _MenuText = (ToolStripTextBox)sender;
+            RangeLimit(_MenuText, (double)-100, 100);
         }
 
         private void MenuList_VolumeText_TextChanged(object sender, EventArgs e)
         {
-            RangeLimit((ToolStripTextBox)sender, (double)0, 100);
+            var _MenuText = (ToolStripTextBox)sender;
+            RangeLimit(_MenuText, (double)0, 100);
         }
 
         private void MenuList_LoopText_TextChanged(object sender, EventArgs e)
         {
-            RangeLimit((ToolStripTextBox)sender, -1, 100);
+            var _MenuText = (ToolStripTextBox)sender;
+            RangeLimit(_MenuText, -1, 100);
         }
 
         private void MenuList_TimeText_TextChanged(object sender, EventArgs e)
         {
-            RangeLimit((ToolStripTextBox)sender, (double)0, 100);
+            var _MenuText = (ToolStripTextBox)sender;
+            RangeLimit(_MenuText, (double)0, 100);
         }
     }
 }
