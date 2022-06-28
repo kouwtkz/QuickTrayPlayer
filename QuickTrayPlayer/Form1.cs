@@ -452,7 +452,6 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 0.05);
-            RangeLimit(_MenuText, (double)0, 32);
         }
 
         private void MenuList_SpeedText_KeyUp(object sender, KeyEventArgs e)
@@ -460,7 +459,7 @@ namespace QuickTrayPlayer
             var _MenuText = (ToolStripTextBox)sender;
             if (Double.TryParse(_MenuText.Text, out double v))
             {
-                Save_Speed(v / 100);
+                Save_Speed(v);
             }
         }
 
@@ -468,7 +467,6 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 1);
-            RangeLimit(_MenuText, (double)-100, 100);
             if (Double.TryParse(_MenuText.Text, out double v))
             {
                 switch (e.KeyCode)
@@ -503,7 +501,6 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 1);
-            RangeLimit(_MenuText, (double)0, 100);
             if (Double.TryParse(_MenuText.Text, out double v))
             {
                 switch (e.KeyCode)
@@ -538,7 +535,6 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 1);
-            RangeLimit(_MenuText, -1, 100);
             if (Int32.TryParse(_MenuText.Text, out int v))
             {
                 if (e.KeyCode == Keys.Enter) Save_Loop(v);
@@ -561,7 +557,6 @@ namespace QuickTrayPlayer
         {
             var _MenuText = (ToolStripTextBox)sender;
             MenuText_KeyDown(_MenuText, e.KeyData, 1);
-            RangeLimit(_MenuText, 0, 100);
             if (e.KeyData == Keys.Enter)
             {
                 if (Double.TryParse(_MenuText.Text, out double v))
@@ -592,6 +587,31 @@ namespace QuickTrayPlayer
             {
                 e.Handled = true;
             }
+        }
+
+        private void MenuList_SpeedText_TextChanged(object sender, EventArgs e)
+        {
+            RangeLimit((ToolStripTextBox)sender, 0.05, 256);
+        }
+
+        private void MenuList_PanPotText_TextChanged(object sender, EventArgs e)
+        {
+            RangeLimit((ToolStripTextBox)sender, (double)-100, 100);
+        }
+
+        private void MenuList_VolumeText_TextChanged(object sender, EventArgs e)
+        {
+            RangeLimit((ToolStripTextBox)sender, (double)0, 100);
+        }
+
+        private void MenuList_LoopText_TextChanged(object sender, EventArgs e)
+        {
+            RangeLimit((ToolStripTextBox)sender, -1, 100);
+        }
+
+        private void MenuList_TimeText_TextChanged(object sender, EventArgs e)
+        {
+            RangeLimit((ToolStripTextBox)sender, (double)0, 100);
         }
     }
 }
