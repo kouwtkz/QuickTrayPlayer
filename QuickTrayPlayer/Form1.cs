@@ -77,7 +77,7 @@ namespace QuickTrayPlayer
                 MOD_KEY.NONE, Keys.MediaPlayPause, () => { PlayPause(); }
             );
             EnableHotKey("MediaPreviousTrack",
-                MOD_KEY.NONE, Keys.MediaPlayPause, () => { Replay(); }
+                MOD_KEY.NONE, Keys.MediaPreviousTrack, () => { Replay(); }
             );
             EnableHotKey("MediaNextTrack",
                 MOD_KEY.NONE, Keys.MediaNextTrack, () => { Stop(); EndSwitch(); }
